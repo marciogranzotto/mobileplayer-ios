@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 MovieLaLa. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import MediaPlayer
 
@@ -38,16 +39,16 @@ final class MobilePlayerControlsView: UIView {
     addSubview(activityIndicatorView)
     addSubview(overlayContainerView)
     if topBar.elements.count == 0 {
-      topBar.addElementUsingConfig(ButtonConfig(dictionary: ["type": "button", "identifier": "close"]))
-      topBar.addElementUsingConfig(LabelConfig(dictionary: ["type": "label", "identifier": "title"]))
-      topBar.addElementUsingConfig(ButtonConfig(dictionary: ["type": "button", "identifier": "action"]))
+      topBar.addElementUsingConfig(ButtonConfig(dictionary: ["type": NSString(string: "button"), "identifier": NSString(string: "close")]))
+      topBar.addElementUsingConfig(LabelConfig(dictionary: ["type": NSString(string: "label"), "identifier": NSString(string: "title")]))
+      topBar.addElementUsingConfig(ButtonConfig(dictionary: ["type": NSString(string: "button"), "identifier": NSString(string: "action")]))
     }
     addSubview(topBar)
     if bottomBar.elements.count == 0 {
-      bottomBar.addElementUsingConfig(ToggleButtonConfig(dictionary: ["type": "toggleButton", "identifier": "play"]))
-      bottomBar.addElementUsingConfig(LabelConfig(dictionary: ["type": "label", "identifier": "currentTime"]))
-      bottomBar.addElementUsingConfig(SliderConfig(dictionary: ["type": "slider", "identifier": "playback", "marginLeft": 8, "marginRight": 8]))
-      bottomBar.addElementUsingConfig(LabelConfig(dictionary: ["type": "label", "identifier": "duration", "marginRight": 8]))
+      bottomBar.addElementUsingConfig(ToggleButtonConfig(dictionary: ["type": NSString(string: "toggleButton"), "identifier": NSString(string: "play")]))
+      bottomBar.addElementUsingConfig(LabelConfig(dictionary: ["type": NSString(string: "label"), "identifier": NSString(string: "currentTime")]))
+      bottomBar.addElementUsingConfig(SliderConfig(dictionary: ["type": NSString(string: "slider"), "identifier": NSString(string: "playback"), "marginLeft": 8 as NSNumber, "marginRight": 8 as NSNumber]))
+      bottomBar.addElementUsingConfig(LabelConfig(dictionary: ["type": NSString(string: "label"), "identifier": NSString(string: "duration"), "marginRight": 8 as NSNumber]))
     }
     addSubview(bottomBar)
   }

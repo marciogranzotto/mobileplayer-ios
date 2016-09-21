@@ -91,7 +91,7 @@ public class SliderConfig: ElementConfig {
     if let thumbTintColorHex = dictionary["thumbTintColor"] as? String {
       thumbTintColor = UIColor(hex: thumbTintColorHex)
     } else {
-      thumbTintColor = UIColor.white()
+      thumbTintColor = UIColor.white
     }
 
     thumbWidth = (dictionary["thumbWidth"] as? CGFloat) ?? 16
@@ -102,7 +102,7 @@ public class SliderConfig: ElementConfig {
     if let thumbBorderColorHex = dictionary["thumbBorderColor"] as? String {
       thumbBorderColor = UIColor(hex: thumbBorderColorHex).cgColor
     } else {
-      thumbBorderColor = UIColor.clear().cgColor
+      thumbBorderColor = UIColor.clear.cgColor
     }
 
     super.init(dictionary: dictionary)

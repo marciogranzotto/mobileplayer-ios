@@ -70,8 +70,8 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
   private var previousStatusBarHiddenValue: Bool!
   private var previousStatusBarStyle: UIStatusBarStyle!
   private var isFirstPlay = true
-  private var seeking = false
-  private var wasPlayingBeforeSeek = false
+  var seeking = false
+  var wasPlayingBeforeSeek = false
   private var playbackInterfaceUpdateTimer: Timer?
   private var hideControlsTimer: Timer?
 
@@ -154,7 +154,7 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
         }
         if let
           userInfo = (notification as NSNotification).userInfo as? [String: AnyObject],
-          error = userInfo["error"] as? NSError {
+          let error = userInfo["error"] as? NSError {
             NotificationCenter.default.post(
               name: Notification.Name(rawValue: MobilePlayerDidEncounterErrorNotification),
               object: slf,
@@ -264,8 +264,8 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     // Force hide status bar.
-    previousStatusBarHiddenValue = UIApplication.shared().isStatusBarHidden
-    UIApplication.shared().isStatusBarHidden = true
+    previousStatusBarHiddenValue = UIApplication.shared.isStatusBarHidden
+    UIApplication.shared.isStatusBarHidden = true
     setNeedsStatusBarAppearanceUpdate()
   }
 
@@ -282,7 +282,7 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
     super.viewWillDisappear(animated)
     stop()
     // Restore status bar appearance.
-    UIApplication.shared().isStatusBarHidden = previousStatusBarHiddenValue
+    UIApplication.shared.isStatusBarHidden = previousStatusBarHiddenValue
     setNeedsStatusBarAppearanceUpdate()
   }
 
@@ -370,15 +370,15 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
   ///   - sourceView: On iPads the activity view controller is presented as a popover and a source view needs to
   ///     provided or a crash will occur.
   public func showContentActions(_ sourceView: UIView? = nil) {
-    guard let activityItems = activityItems where !activityItems.isEmpty else { return }
+    guard let activityItems = activityItems, !activityItems.isEmpty else { return }
     let wasPlaying = (state == .playing)
     moviePlayer.pause()
     let activityVC = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
     activityVC.excludedActivityTypes =  [
-      UIActivityTypeAssignToContact,
-      UIActivityTypeSaveToCameraRoll,
-      UIActivityTypePostToVimeo,
-      UIActivityTypeAirDrop
+      UIActivityType.assignToContact,
+      UIActivityType.saveToCameraRoll,
+      UIActivityType.postToVimeo,
+      UIActivityType.airDrop
     ]
     activityVC.completionWithItemsHandler = { activityType, completed, returnedItems, activityError in
       if wasPlaying {
@@ -453,7 +453,7 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
     _ overlayViewController: MobilePlayerOverlayViewController,
     startingAtTime presentationTime: TimeInterval? = nil,
     forDuration showDuration: TimeInterval? = nil) {
-      if let presentationTime = presentationTime, showDuration = showDuration {
+      if let presentationTime = presentationTime, let showDuration = showDuration {
         timedOverlays.append(TimedOverlayInfo(
           startTime: presentationTime,
           duration: showDuration,
@@ -495,7 +495,7 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
       self.title = self.title ?? videoInfo.title
       if let
         previewImageURLString = videoInfo.previewImageURL,
-        previewImageURL = URL(string: previewImageURLString) {
+        let previewImageURL = URL(string: previewImageURLString) {
           URLSession.shared.dataTask(with: previewImageURL) { data, response, error in
             guard let data = data else { return }
             DispatchQueue.main.async {
@@ -587,7 +587,7 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
       playButton?.toggled = false
       hideControlsTimer?.invalidate()
       controlsView.controlsHidden = false
-      if let pauseOverlayViewController = pauseOverlayViewController where (state == .paused && !seeking) {
+      if let pauseOverlayViewController = pauseOverlayViewController, (state == .paused && !seeking) {
         showOverlayViewController(pauseOverlayViewController)
       }
     }
@@ -598,7 +598,7 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
     if !currentTime.isNormal {
       return
     }
-    DispatchQueue.global(attributes: DispatchQueue.GlobalAttributes.qosDefault).async {
+    DispatchQueue.global(qos: .default).async {
       for timedOverlayInfo in self.timedOverlays {
         if timedOverlayInfo.startTime <= currentTime && currentTime <= timedOverlayInfo.startTime + timedOverlayInfo.duration {
           if timedOverlayInfo.overlay.parent == nil {
@@ -633,17 +633,17 @@ extension MobilePlayerViewController: MobilePlayerOverlayViewControllerDelegate 
 extension MobilePlayerViewController: SliderDelegate {
 
   func sliderThumbPanDidBegin(_ slider: Slider) {
-    seeking = true
-    wasPlayingBeforeSeek = (state == .playing)
+    self.seeking = true
+    self.wasPlayingBeforeSeek = (state == .playing)
     pause()
   }
 
   func sliderThumbDidPan(_ slider: Slider) {}
 
   func sliderThumbPanDidEnd(_ slider: Slider) {
-    seeking = false
+    self.seeking = false
     moviePlayer.currentPlaybackTime = TimeInterval(slider.value)
-    if wasPlayingBeforeSeek {
+    if self.wasPlayingBeforeSeek {
       play()
     }
   }

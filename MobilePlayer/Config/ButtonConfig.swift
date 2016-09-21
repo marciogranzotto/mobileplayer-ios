@@ -54,7 +54,7 @@ public class ButtonConfig: ElementConfig {
     if let tintColorHex = dictionary["tintColor"] as? String {
       tintColor = UIColor(hex: tintColorHex)
     } else {
-      tintColor = UIColor.white()
+      tintColor = UIColor.white
     }
 
     super.init(dictionary: dictionary)
