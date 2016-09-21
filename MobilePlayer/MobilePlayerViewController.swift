@@ -229,7 +229,7 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
   /// loaded from nib files.
   ///
   /// If you override this method make sure you call super's implementation.
-  public override func viewDidLoad() {
+  open override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(controlsView)
     playbackInterfaceUpdateTimer = Timer.scheduledTimerWithTimeInterval(
@@ -248,7 +248,7 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
   /// this method to make changes before the view lays out its subviews.
   ///
   /// The default implementation of this method sets the frame of the controls view.
-  public override func viewWillLayoutSubviews() {
+  open override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
     controlsView.frame = view.bounds
   }
@@ -261,7 +261,7 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
   ///
   /// - parameters:
   ///  - animated: If `true`, the view is being added to the window using an animation.
-  public override func viewWillAppear(_ animated: Bool) {
+  open override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     // Force hide status bar.
     previousStatusBarHiddenValue = UIApplication.shared.isStatusBarHidden
@@ -278,7 +278,7 @@ public class MobilePlayerViewController: MPMoviePlayerViewController {
   ///
   /// - parameters:
   ///  - animated: If `true`, the disappearance of the view is being animated.
-  public override func viewWillDisappear(_ animated: Bool) {
+  open override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
     stop()
     // Restore status bar appearance.
