@@ -57,7 +57,7 @@ open class MobilePlayerViewController: MPMoviePlayerViewController {
 
   /// A localized string that represents the video this controller manages. Setting a value will update the title label
   /// in the user interface if one exists.
-  public override var title: String? {
+  open override var title: String? {
     didSet {
       guard let titleLabel = getViewForElementWithIdentifier("title") as? Label else { return}
       titleLabel.text = title
