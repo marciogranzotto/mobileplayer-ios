@@ -10,7 +10,7 @@ import UIKit
 import MediaPlayer
 
 /// A view controller for playing media content.
-public class MobilePlayerViewController: MPMoviePlayerViewController {
+open class MobilePlayerViewController: MPMoviePlayerViewController {
   // MARK: Playback State
 
   /// Playback state.
